@@ -95,12 +95,12 @@
     <!-- 全螢幕煙火繪圖畫布 (預設隱藏且穿透點擊) -->
     <canvas id="fireworks-canvas" class="fixed inset-0 pointer-events-none z-50 hidden"></canvas>
 
-    <!-- 背景圖片包裝器：微調垂直坐標（object-position 設為 center 60px）將背景稍微下移，與設計圖完美契合 -->
-    <div class="absolute top-0 left-0 w-full h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
+    <!-- 背景圖片包裝器：修正大銀幕跑偏。透過限制 max-w-[1920px] 配合置中定位，在大螢幕下能完美與格線對齊，不縮放偏移 -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1920px] h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
         <!-- 主太空背景圖 -->
         <img src="https://storage.yilup.com/uploads/1/6a10eb080b304_1779493640.webp" 
              alt="Space Background" 
-             class="w-full h-full object-cover scale-105 opacity-90 filter brightness-110"
+             class="w-full h-full object-cover opacity-90 filter brightness-110"
              style="object-position: center 60px;">
         <!-- 底部漸層融合遮罩 -->
         <div class="absolute inset-0 bg-gradient-to-t from-spaceDark-950 via-transparent to-transparent"></div>
@@ -218,10 +218,9 @@
                 <!-- 右側太空艙定位與漂浮飛船容器 -->
                 <div class="lg:col-span-5 h-[340px] lg:h-[480px] flex items-center justify-center relative">
                     
-                    <!-- 🛠️ 重新大改版：超奢華掠翼式星際超航機 (點擊此處進行 Hyperdrive 隨機進度條充能) 🛠️ -->
+                    <!-- 🛠️ 太空船元件 (點擊此處進行 Hyperdrive 隨機進度條充能) 🛠️ -->
                     <div id="scrolling-spaceship" onclick="handleSpaceshipClick(event)" class="absolute z-20 cursor-pointer transition-all duration-300 ease-out" style="top: -5px; right: 26%; width: 150px; height: 150px; will-change: transform;">
                         <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
-                            <!-- 引擎能量光晕定義 -->
                             <defs>
                                 <linearGradient id="laser-blue" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#38bdf8" stop-opacity="1" />
@@ -235,45 +234,45 @@
                                 </filter>
                             </defs>
                             
-                            <!-- 雙針等離子主尾焰 (超流線型能量噴射) -->
+                            <!-- 雙針等離子主尾焰 -->
                             <polygon id="engine-fire" class="engine-flame" points="100,128 88,190 100,210 112,190" fill="url(#laser-blue)" filter="url(#warp-glow)" />
                             
-                            <!-- 左右超對稱輔助微型推進火光 -->
+                            <!-- 左右推進火光 -->
                             <polygon class="engine-flame" points="56,122 48,165 56,172 60,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
                             <polygon class="engine-flame" points="144,122 140,165 144,172 152,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
 
-                            <!-- 後懸浮式曲率環 (Warp Ring) - 太空奢華超航機的核心標誌，散發淡藍色光圈 -->
+                            <!-- 曲率環 (Warp Ring) -->
                             <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.7" filter="url(#warp-glow)" />
                             <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#C19A5B" stroke-width="1.2" opacity="0.9" />
 
-                            <!-- 飛船副掠翼與推進支柱 (曜石灰與星際金) -->
+                            <!-- 飛船副掠翼與推進支柱 -->
                             <path d="M 55,100 L 25,122 L 32,130 L 75,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
                             <path d="M 145,100 L 175,122 L 168,130 L 125,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
 
-                            <!-- 新前衛超薄三角主翼裝甲 (極致流線切邊、曜石深藍、耀眼金箔封邊) -->
+                            <!-- 主翼裝甲 -->
                             <path d="M 100,10 L 40,98 L 70,118 L 100,98 L 130,118 L 160,98 Z" fill="#1e293b" stroke="#C19A5B" stroke-width="2.2" />
                             
-                            <!-- 雙針機頭：前衛的雙軌超導合金針狀翼片 -->
+                            <!-- 雙針機頭 -->
                             <line x1="92" y1="12" x2="92" y2="45" stroke="#C19A5B" stroke-width="1.5" />
                             <line x1="108" y1="12" x2="108" y2="45" stroke="#C19A5B" stroke-width="1.5" />
 
-                            <!-- 機身折線高光貼條：強化極速立體視覺 -->
+                            <!-- 高光貼條 -->
                             <path d="M 46,95 L 75,110 L 95,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
                             <path d="M 154,95 L 125,110 L 105,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
 
-                            <!-- 中軸線裝甲脊梁 (暗金幾何稜角) -->
+                            <!-- 中軸線裝甲 -->
                             <path d="M 100,22 L 85,82 L 100,102 L 115,82 Z" fill="#070c15" stroke="#C19A5B" stroke-width="1.2" />
 
-                            <!-- 前衛鑽石切面一體式藍色光感駕駛艙 (具有強烈的能量堆心感) -->
+                            <!-- 駕駛艙 -->
                             <path d="M 100,38 L 88,72 L 100,84 L 112,72 Z" fill="#0ea5e9" opacity="0.85" filter="url(#warp-glow)" />
                             <polygon points="100,44 94,68 100,76 106,68" fill="#ffffff" opacity="0.65" />
                             <circle cx="100" cy="68" r="4.5" fill="#ffffff" filter="url(#warp-glow)" />
 
-                            <!-- 兩翼垂直雙層翼尖稳定器 -->
+                            <!-- 翼尖穩定器 -->
                             <path d="M 40,98 L 18,112 L 32,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
                             <path d="M 160,98 L 182,112 L 168,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
 
-                            <!-- 航行指示流光定位燈 (微光閃爍效果) -->
+                            <!-- 定位指示燈 -->
                             <circle cx="18" cy="112" r="2.5" fill="#ef4444" filter="url(#warp-glow)" />
                             <circle cx="182" cy="112" r="2.5" fill="#10b981" filter="url(#warp-glow)" />
                         </svg>
@@ -694,9 +693,7 @@
 
     </div>
 
-    <!-- 交互模組 / 功能性彈出視窗 -->
-
-    <!-- 🛠️ 完美復刻：Messenger 行銷導流彈出視窗 (連結已修正為官方直達對話框專屬格式 m.me) 🛠️ -->
+    <!-- 🛠️ Messenger 行銷導流彈出視窗 (連結為官方直達對話框專屬格式 m.me) 🛠️ -->
     <div id="messenger-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-[#0B121E] border border-gray-800 rounded-[32px] p-8 max-w-[420px] w-full text-center relative shadow-2xl shadow-blue-500/10">
             <!-- 關閉按鈕 -->
@@ -704,7 +701,7 @@
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
             
-            <!-- Messenger 大圓標 (亮藍漸層) -->
+            <!-- Messenger 大圓標 -->
             <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-[#0066ff] to-[#00c6ff] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/25">
                 <svg class="w-11 h-11 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.5 2 2 6.14 2 11.25c0 2.61 1.19 4.96 3.11 6.57.16.13.25.33.25.54l-.03 1.72c-.01.52.53.88.99.63l1.92-1.05c.16-.09.34-.11.51-.06 1.02.28 2.11.43 3.25.43 5.5 0 10-4.14 10-9.25S17.5 2 12 2zm1.1 11.97l-2.03-2.16-3.95 2.16c-.44.24-.94-.23-.74-.69l2.16-4.91 2.03 2.16 3.95-2.16c.44-.24.94.23.74.69l-2.16 4.91z"/>
@@ -720,9 +717,8 @@
                 Click to open Messenger, send <span class="text-[#00c6ff] font-bold">CHECKLIST</span>, get it instantly.
             </p>
             
-            <!-- FB 導流外跳按鈕：修正為 m.me 協定直接啟動對話視窗 -->
+            <!-- FB 導流外跳按鈕：m.me 協定直接啟動對話視窗 -->
             <a href="https://m.me/murray.wen" target="_blank" onclick="closeMessengerModal()" class="w-full flex items-center justify-center space-x-2 py-4 bg-[#0084FF] hover:bg-[#0072DD] active:scale-[0.97] transition-all text-white font-bold tracking-wide text-sm rounded-full shadow-lg shadow-blue-500/20">
-                <!-- 按鈕內白色 Lightning SVG -->
                 <svg class="w-5 h-5 text-white mr-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.5 2 2 6.14 2 11.25c0 2.61 1.19 4.96 3.11 6.57.16.13.25.33.25.54l-.03 1.72c-.01.52.53.88.99.63l1.92-1.05c.16-.09.34-.11.51-.06 1.02.28 2.11.43 3.25.43 5.5 0 10-4.14 10-9.25S17.5 2 12 2zm1.1 11.97l-2.03-2.16-3.95 2.16c-.44.24-.94-.23-.74-.69l2.16-4.91 2.03 2.16 3.95-2.16c.44-.24.94.23.74.69l-2.16 4.91z"/>
                 </svg>
@@ -901,7 +897,7 @@
         let currentMouseX = 0;
         let currentMouseY = 0;
 
-        // 自主無重力上下漂浮微幅動畫累加值 (避免使用 CSS 衝突，改由 JS 直接控制)
+        // 自主無重力上下漂浮微幅動畫累加值
         let floatTime = 0;
 
         // 動態推力強度
@@ -963,7 +959,7 @@
 
         requestAnimationFrame(updateSpaceshipAnimation);
 
-        // 🛠️ 新增互動：點擊飛船進度充能，觸發全螢幕煙火及 Messenger 彈出式廣告 🛠️
+        // 🛠️ 互動功能：點擊飛船進度充能，觸發全螢幕煙火及 Messenger 彈出式廣告 🛠️
         let warpChargePercent = 0;
         let isWarpComplete = false;
         const warp_hud = document.getElementById('warp-hud');
@@ -992,7 +988,7 @@
                 flame.style.transform = `scaleY(2.2)`;
             });
 
-            // 4. 【修正優化】進度達 100% 瞬間，立即隱藏 HUD 充能指示並「立刻」發射煙火秀
+            // 4. 進度達 100% 瞬間，立即隱藏 HUD 充能指示並「立刻」發射煙火秀
             if (warpChargePercent >= 100) {
                 isWarpComplete = true;
                 
@@ -1000,7 +996,7 @@
                 warp_hud.classList.remove('opacity-100');
                 warp_hud.classList.add('opacity-0');
                 
-                // 【立刻觸發】煙火效果，無需等待！
+                // 【立刻觸發】煙火效果
                 launchWarpFireworks();
             }
         }
@@ -1088,13 +1084,13 @@
                 }, i * 350);
             }
 
-            // 煙火施放 4 秒後自動彈出 Messenger 行銷 Checklist 卡片
+            // 【修正】煙火施放時間縮短至 5 秒後自動彈出 Messenger 行銷 Checklist 卡片
             setTimeout(() => {
                 fireworksActive = false;
                 canvas.classList.add('hidden');
                 // 顯示精緻的 Messenger 彈窗
                 openMessengerModal();
-            }, 5500);
+            }, 5000); // 縮短為 5000 毫秒 (5秒)
         }
 
         // Messenger 導流視窗開關
@@ -1104,8 +1100,15 @@
             messengerModal.classList.remove('hidden');
         }
 
+        // 在關閉 Messenger 視窗或跳轉時重設引擎充能與點擊限制，實現不限次數觸發煙火！
         function closeMessengerModal() {
             messengerModal.classList.add('hidden');
+            
+            // 重設太空船點擊與充能狀態
+            isWarpComplete = false;
+            warpChargePercent = 0;
+            hud_percent.innerText = "0%";
+            hud_bar.style.width = "0%";
         }
 
         function closeDestinationModal() {
