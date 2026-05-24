@@ -95,8 +95,8 @@
     <!-- 全螢幕煙火繪圖畫布 (預設隱藏且穿透點擊) -->
     <canvas id="fireworks-canvas" class="fixed inset-0 pointer-events-none z-50 hidden"></canvas>
 
-    <!-- 背景圖片包裝器：修正大銀幕跑偏。透過限制 max-w-[1920px] 配合置中定位，在大螢幕下能完美與格線對齊，不縮放偏移 -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1920px] h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
+    <!-- 背景圖片包裝器：修正大銀幕跑偏。透過限制 max-w-7xl 與主導航、主內容寬度保持完全一致（1280px），在超大寬螢幕展示時絕不超出指定紅色邊界 -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
         <!-- 主太空背景圖 -->
         <img src="https://storage.yilup.com/uploads/1/6a10eb080b304_1779493640.webp" 
              alt="Space Background" 
@@ -1084,13 +1084,13 @@
                 }, i * 350);
             }
 
-            // 【修正】煙火施放時間縮短至 5 秒後自動彈出 Messenger 行銷 Checklist 卡片
+            // 【優化修正】將煙火施放時間從 5 秒再次縮短，改為 2.5 秒，接著自動彈出 Messenger 行銷 Checklist 卡片
             setTimeout(() => {
                 fireworksActive = false;
                 canvas.classList.add('hidden');
                 // 顯示精緻的 Messenger 彈窗
                 openMessengerModal();
-            }, 5000); // 縮短為 5000 毫秒 (5秒)
+            }, 2500); // 縮短為 2500 毫秒 (2.5秒)，節奏更緊湊
         }
 
         // Messenger 導流視窗開關
