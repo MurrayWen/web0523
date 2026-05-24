@@ -90,610 +90,617 @@
         }
     </style>
 </head>
-<body class="relative min-h-screen">
+<body class="relative min-h-screen bg-spaceDark-950">
 
     <!-- 全螢幕煙火繪圖畫布 (預設隱藏且穿透點擊) -->
     <canvas id="fireworks-canvas" class="fixed inset-0 pointer-events-none z-50 hidden"></canvas>
 
-    <!-- 背景圖片包裝器：修正大銀幕跑偏。透過限制 max-w-7xl 與主導航、主內容寬度保持完全一致（1280px），在超大寬螢幕展示時絕不超出指定紅色邊界 -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
-        <!-- 主太空背景圖 -->
-        <img src="https://storage.yilup.com/uploads/1/6a10eb080b304_1779493640.webp" 
-             alt="Space Background" 
-             class="w-full h-full object-cover opacity-90 filter brightness-110"
-             style="object-position: center 60px;">
-        <!-- 底部漸層融合遮罩 -->
-        <div class="absolute inset-0 bg-gradient-to-t from-spaceDark-950 via-transparent to-transparent"></div>
-    </div>
+    <!-- 🛠️ 核心容器：限制網頁最大寬度為 max-w-7xl (1280px)，居中對齊。這能完美鎖定背景不跑版 🛠️ -->
+    <div class="relative max-w-7xl mx-auto min-h-screen">
 
-    <!-- 主頁面內容包裝器 -->
-    <div class="relative z-10">
+        <!-- 🪐 背景圖片包裝器：放置於限制寬度的容器內，使其絕對無法超出標示邊界 🪐 -->
+        <div class="absolute top-0 left-0 w-full h-[1050px] lg:h-[1200px] z-0 overflow-hidden pointer-events-none">
+            <!-- 主太空背景圖 -->
+            <img src="https://storage.yilup.com/uploads/1/6a10eb080b304_1779493640.webp" 
+                 alt="Space Background" 
+                 class="w-full h-full object-cover opacity-90 filter brightness-110"
+                 style="object-position: center 60px;">
+            <!-- 底部漸層融合遮罩 -->
+            <div class="absolute inset-0 bg-gradient-to-t from-spaceDark-950 via-transparent to-transparent"></div>
+        </div>
 
-        <!-- 頂部導覽列 -->
-        <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
-                <!-- 品牌標誌 -->
-                <a href="#" class="flex items-center space-x-3 group">
-                    <div class="relative w-8 h-8 flex items-center justify-center">
-                        <svg class="w-full h-full text-spaceGold group-hover:rotate-45 transition-transform duration-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="12" r="8"></circle>
-                            <ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-30 12 12)"></ellipse>
-                        </svg>
+        <!-- 主頁面內容包裝器 -->
+        <div class="relative z-10">
+
+            <!-- 頂部導覽列 -->
+            <header class="w-full py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between">
+                    <!-- 品牌標誌 -->
+                    <a href="#" class="flex items-center space-x-3 group">
+                        <div class="relative w-8 h-8 flex items-center justify-center">
+                            <svg class="w-full h-full text-spaceGold group-hover:rotate-45 transition-transform duration-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="8"></circle>
+                                <ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-30 12 12)"></ellipse>
+                            </svg>
+                        </div>
+                        <span class="font-orbitron text-lg font-bold tracking-widest text-white">SPACE TOURS</span>
+                    </a>
+
+                    <!-- 桌面版導覽選單 -->
+                    <nav class="hidden md:flex items-center space-x-10 text-xs tracking-[0.2em] font-orbitron text-gray-300">
+                        <a href="#about" class="hover:text-spaceGold transition-colors">ABOUT</a>
+                        <a href="#included" class="hover:text-spaceGold transition-colors">INCLUDED</a>
+                        <a href="#destinations" class="hover:text-spaceGold transition-colors">DESTINATIONS</a>
+                        <a href="#contacts" class="hover:text-spaceGold transition-colors font-medium">CONTACTS</a>
+                    </nav>
+
+                    <!-- 右右上角預約按鈕 -->
+                    <div class="hidden sm:block">
+                        <button onclick="openBookingModal('General Exploration')" class="px-6 py-2 border border-spaceGold text-spaceGold text-xs tracking-widest font-orbitron hover:bg-spaceGold hover:text-black transition-all duration-300 rounded font-semibold">
+                            BOOK NOW
+                        </button>
                     </div>
-                    <span class="font-orbitron text-lg font-bold tracking-widest text-white">SPACE TOURS</span>
-                </a>
 
-                <!-- 桌面版導覽選單 -->
-                <nav class="hidden md:flex items-center space-x-10 text-xs tracking-[0.2em] font-orbitron text-gray-300">
-                    <a href="#about" class="hover:text-spaceGold transition-colors">ABOUT</a>
-                    <a href="#included" class="hover:text-spaceGold transition-colors">INCLUDED</a>
-                    <a href="#destinations" class="hover:text-spaceGold transition-colors">DESTINATIONS</a>
-                    <a href="#contacts" class="hover:text-spaceGold transition-colors font-medium">CONTACTS</a>
-                </nav>
-
-                <!-- 右上角預約按鈕 -->
-                <div class="hidden sm:block">
-                    <button onclick="openBookingModal('General Exploration')" class="px-6 py-2 border border-spaceGold text-spaceGold text-xs tracking-widest font-orbitron hover:bg-spaceGold hover:text-black transition-all duration-300 rounded font-semibold">
-                        BOOK NOW
+                    <!-- 手機版選單按鈕 -->
+                    <button id="mobile-menu-btn" class="md:hidden text-white hover:text-spaceGold focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
 
-                <!-- 手機版選單按鈕 -->
-                <button id="mobile-menu-btn" class="md:hidden text-white hover:text-spaceGold focus:outline-none">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <!-- 手機版導覽下拉選單 -->
+                <div id="mobile-menu" class="hidden md:hidden mt-4 p-4 rounded-lg bg-spaceDark-900 border border-gray-800 flex-col space-y-4 text-sm tracking-widest font-orbitron">
+                    <a href="#about" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">ABOUT</a>
+                    <a href="#included" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">INCLUDED</a>
+                    <a href="#destinations" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">DESTINATIONS</a>
+                    <a href="#contacts" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">CONTACTS</a>
+                    <button onclick="openBookingModal('General Exploration'); toggleMobileMenu();" class="w-full py-2.5 border border-spaceGold text-spaceGold hover:bg-spaceGold hover:text-black transition-all duration-300 rounded text-center">
+                        BOOK NOW
+                    </button>
+                </div>
+            </header>
+
+            <!-- 側邊社群媒體連結 (右側懸浮) -->
+            <div class="absolute right-6 top-1/4 hidden lg:flex flex-col space-y-6 z-50 text-gray-400">
+                <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Instagram"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Twitter"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Globe"><i data-lucide="globe" class="w-5 h-5"></i></a>
             </div>
 
-            <!-- 手機版導覽下拉選單 -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 p-4 rounded-lg bg-spaceDark-900 border border-gray-800 flex-col space-y-4 text-sm tracking-widest font-orbitron">
-                <a href="#about" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">ABOUT</a>
-                <a href="#included" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">INCLUDED</a>
-                <a href="#destinations" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">DESTINATIONS</a>
-                <a href="#contacts" class="block text-gray-300 hover:text-spaceGold py-2" onclick="toggleMobileMenu()">CONTACTS</a>
-                <button onclick="openBookingModal('General Exploration'); toggleMobileMenu();" class="w-full py-2.5 border border-spaceGold text-spaceGold hover:bg-spaceGold hover:text-black transition-all duration-300 rounded text-center">
-                    BOOK NOW
-                </button>
-            </div>
-        </header>
-
-        <!-- 側邊社群媒體連結 (右側懸浮) -->
-        <div class="fixed right-6 top-1/4 hidden lg:flex flex-col space-y-6 z-50 text-gray-400">
-            <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Instagram"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-            <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Twitter"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-            <a href="#" class="hover:text-spaceGold transition-all duration-200" title="Globe"><i data-lucide="globe" class="w-5 h-5"></i></a>
-        </div>
-
-        <!-- 英雄主標題區塊 -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
-                
-                <!-- 左側文案欄位 -->
-                <div class="lg:col-span-7 space-y-6 md:space-y-8 z-10">
-                    <div class="space-y-2">
-                        <span class="text-xs uppercase tracking-[0.4em] text-spaceGold font-orbitron font-semibold block">BEYOND IMAGINATION</span>
-                        <h1 class="text-4xl sm:text-6xl lg:text-[76px] font-bold font-orbitron tracking-wide leading-tight text-white">
-                            EXPLORE <br>
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-spaceGold-light">THE UNIVERSE</span>
-                        </h1>
-                    </div>
-
-                    <p class="text-gray-400 text-sm sm:text-base max-w-xl font-light leading-relaxed">
-                        Luxury space journeys to the most extraordinary destinations. Experience the ultimate limits of human travel in unparalleled elegance.
-                    </p>
-
-                    <!-- 動作按鈕 -->
-                    <div class="flex flex-wrap gap-4 items-center pt-2">
-                        <button onclick="openBookingModal('Full Universe Tour')" class="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-spaceGold-dark via-spaceGold to-spaceGold-light text-black font-semibold tracking-wider text-xs uppercase font-orbitron rounded hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-spaceGold/10">
-                            <span>BOOK YOUR JOURNEY</span>
-                            <i data-lucide="navigation" class="w-4 h-4 transform rotate-45"></i>
-                        </button>
-                        <button onclick="openVideoPlayer()" class="flex items-center space-x-2 px-8 py-4 bg-white/5 border border-white/15 hover:border-white/30 text-white font-semibold tracking-wider text-xs uppercase font-orbitron rounded hover:bg-white/10 active:scale-95 transition-all">
-                            <span>WATCH VIDEO</span>
-                            <i data-lucide="play-circle" class="w-4 h-4 text-spaceGold"></i>
-                        </button>
-                    </div>
-
-                    <!-- 信任度數據指標 -->
-                    <div class="flex items-center space-x-4 pt-6 border-t border-white/5 max-w-sm">
-                        <div class="flex -space-x-2">
-                            <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
-                            <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
-                            <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
-                        </div>
-                        <div>
-                            <div class="flex text-spaceGold mb-0.5">
-                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                            </div>
-                            <p class="text-[11px] text-gray-400 font-medium">
-                                Join <span class="text-white font-semibold">2,000+ explorers</span> who already traveled with us.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 右側太空艙定位與漂浮飛船容器 -->
-                <div class="lg:col-span-5 h-[340px] lg:h-[480px] flex items-center justify-center relative">
+            <!-- 英雄主標題區塊 -->
+            <main class="w-full px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-16">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
                     
-                    <!-- 🛠️ 太空船元件 (點擊此處進行 Hyperdrive 隨機進度條充能) 🛠️ -->
-                    <div id="scrolling-spaceship" onclick="handleSpaceshipClick(event)" class="absolute z-20 cursor-pointer transition-all duration-300 ease-out" style="top: -5px; right: 26%; width: 150px; height: 150px; will-change: transform;">
-                        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
-                            <defs>
-                                <linearGradient id="laser-blue" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="1" />
-                                    <stop offset="30%" stop-color="#0ea5e9" stop-opacity="0.85" />
-                                    <stop offset="70%" stop-color="#0284c7" stop-opacity="0.3" />
-                                    <stop offset="100%" stop-color="#0369a1" stop-opacity="0" />
-                                </linearGradient>
-                                <filter id="warp-glow" x="-40%" y="-40%" width="180%" height="180%">
-                                    <feGaussianBlur stdDeviation="6" result="blur" />
-                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                </filter>
-                            </defs>
-                            
-                            <!-- 雙針等離子主尾焰 -->
-                            <polygon id="engine-fire" class="engine-flame" points="100,128 88,190 100,210 112,190" fill="url(#laser-blue)" filter="url(#warp-glow)" />
-                            
-                            <!-- 左右推進火光 -->
-                            <polygon class="engine-flame" points="56,122 48,165 56,172 60,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
-                            <polygon class="engine-flame" points="144,122 140,165 144,172 152,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
-
-                            <!-- 曲率環 (Warp Ring) -->
-                            <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.7" filter="url(#warp-glow)" />
-                            <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#C19A5B" stroke-width="1.2" opacity="0.9" />
-
-                            <!-- 飛船副掠翼與推進支柱 -->
-                            <path d="M 55,100 L 25,122 L 32,130 L 75,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
-                            <path d="M 145,100 L 175,122 L 168,130 L 125,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
-
-                            <!-- 主翼裝甲 -->
-                            <path d="M 100,10 L 40,98 L 70,118 L 100,98 L 130,118 L 160,98 Z" fill="#1e293b" stroke="#C19A5B" stroke-width="2.2" />
-                            
-                            <!-- 雙針機頭 -->
-                            <line x1="92" y1="12" x2="92" y2="45" stroke="#C19A5B" stroke-width="1.5" />
-                            <line x1="108" y1="12" x2="108" y2="45" stroke="#C19A5B" stroke-width="1.5" />
-
-                            <!-- 高光貼條 -->
-                            <path d="M 46,95 L 75,110 L 95,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
-                            <path d="M 154,95 L 125,110 L 105,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
-
-                            <!-- 中軸線裝甲 -->
-                            <path d="M 100,22 L 85,82 L 100,102 L 115,82 Z" fill="#070c15" stroke="#C19A5B" stroke-width="1.2" />
-
-                            <!-- 駕駛艙 -->
-                            <path d="M 100,38 L 88,72 L 100,84 L 112,72 Z" fill="#0ea5e9" opacity="0.85" filter="url(#warp-glow)" />
-                            <polygon points="100,44 94,68 100,76 106,68" fill="#ffffff" opacity="0.65" />
-                            <circle cx="100" cy="68" r="4.5" fill="#ffffff" filter="url(#warp-glow)" />
-
-                            <!-- 翼尖穩定器 -->
-                            <path d="M 40,98 L 18,112 L 32,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
-                            <path d="M 160,98 L 182,112 L 168,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
-
-                            <!-- 定位指示燈 -->
-                            <circle cx="18" cy="112" r="2.5" fill="#ef4444" filter="url(#warp-glow)" />
-                            <circle cx="182" cy="112" r="2.5" fill="#10b981" filter="url(#warp-glow)" />
-                        </svg>
-
-                        <!-- 🛠️ 太空船自帶：懸浮投影超空間引擎進度 HUD 顯示 🛠️ -->
-                        <div id="warp-hud" class="absolute left-1/2 -translate-x-1/2 -top-16 bg-black/85 border border-spaceGold/50 rounded-lg p-2.5 w-40 text-left opacity-0 pointer-events-none transition-all duration-300 shadow-[0_0_15px_rgba(193,154,91,0.2)]">
-                            <div class="flex justify-between items-center text-[9px] font-orbitron tracking-widest text-spaceGold-light font-bold mb-1.5">
-                                <span>HYPERDRIVE</span>
-                                <span id="hud-percent">0%</span>
-                            </div>
-                            <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div id="hud-bar" class="h-full bg-gradient-to-r from-spaceGold-dark via-spaceGold to-spaceGold-light transition-all duration-200" style="width: 0%"></div>
-                            </div>
-                            <p class="text-[7px] text-gray-400 font-orbitron mt-1 text-center uppercase tracking-widest">Click ship to charge</p>
-                        </div>
-                    </div>
-
-                    <!-- 原有的 Next Launch 定位指示器 -->
-                    <div class="absolute p-4 glass-panel border border-spaceGold/10 rounded-xl flex items-center space-x-3 bottom-0 right-0 max-w-xs z-10 animate-bounce" style="animation-duration: 4s;">
-                        <span class="relative flex h-3.5 w-3.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-spaceGold opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-spaceGold"></span>
-                        </span>
-                        <div class="text-[10px] tracking-widest font-orbitron uppercase text-gray-300">
-                            Next Launch: <span class="text-white font-bold">22 hours</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- 目的地卡片區塊 -->
-            <div id="destinations" class="mt-16 lg:mt-24">
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
-                    
-                    <!-- 卡片 1: 月球度假 -->
-                    <div onclick="selectDestination('Lunar Escape', '3 Days', 'Experience zero gravity and stunning lunar views on this beautiful 3-day round trip flight.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a11445360add_1779516499.png" alt="Lunar Escape" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Earth Orb</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">LUNAR ESCAPE</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">3 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 2: 火星先鋒 -->
-                    <div onclick="selectDestination('Mars Frontier', '7 Days', 'Step into the future on the Red Planet. Explore canyons, ancient dry lake beds and futuristic research habitats.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a1144524808d_1779516498.png" alt="Mars Frontier" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Terrestrial</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">MARS FRONTIER</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">7 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 3: 木星探險 -->
-                    <div onclick="selectDestination('Jupiter Odyssey', '10 Days', 'Sail past the Great Red Spot and witness the immense majesty of the Jovian solar sphere from dynamic safe orbit.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a11445270079_1779516498.png" alt="Jupiter Odyssey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Gas Giant</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">JUPITER ODYSSEY</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">10 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 4: 土星光環 -->
-                    <div onclick="selectDestination('Saturn Rings', '8 Days', 'Drift along the iconic ring lines. Peer deep into the dust gaps and marvel at millions of brilliant reflections.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a114452984bb_1779516498.png" alt="Saturn Rings" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Ring World</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">SATURN RINGS</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">8 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 5: 星雲尋蹤 -->
-                    <div onclick="selectDestination('Nebula Hunt', '5 Days', 'Travel close to highly energetic star birth complexes. View vibrant gases emitting stellar glow up close.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a114452bf43c_1779516498.png" alt="Nebula Hunt" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Stellar</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">NEBULA HUNT</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">5 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 6: 超越太陽 -->
-                    <div onclick="selectDestination('Beyond Solar', '14 Days', 'Fly deep past the Kuiper Belt limits into interstellar boundaries. Experience authentic stellar silence.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
-                        <div class="overflow-hidden rounded-md h-28 relative">
-                            <img src="https://storage.yilup.com/uploads/1/6a114451b7881_1779516497.png" alt="Beyond Solar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Deep Space</div>
-                        </div>
-                        <div class="mt-2 flex flex-col justify-end flex-grow">
-                            <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">BEYOND SOLAR</h3>
-                            <span class="text-[9px] text-gray-500 font-medium">14 DAYS</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片 7: 瀏覽全部行程 -->
-                    <div onclick="scrollToContact()" class="gold-border-glow bg-gradient-to-br from-spaceDark-900 to-spaceDark-800 p-4 rounded-lg cursor-pointer flex flex-col items-center justify-center text-center h-52 border border-dashed border-spaceGold/20 hover:bg-spaceDark-800 transition-all">
-                        <div class="w-10 h-10 rounded-full border border-spaceGold/40 flex items-center justify-center mb-3">
-                            <i data-lucide="rocket" class="w-5 h-5 text-spaceGold"></i>
-                        </div>
-                        <span class="text-[11px] font-orbitron tracking-widest text-spaceGold uppercase block font-semibold">VIEW ALL TOURS</span>
-                        <span class="text-[9px] text-gray-400 mt-1 block">Explore all destinations</span>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- 關於行程區塊 -->
-            <section id="about" class="mt-28 lg:mt-36 pt-12 border-t border-white/5">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    
-                    <!-- 左側文案與特色 -->
-                    <div class="lg:col-span-5 space-y-8">
-                        <div>
-                            <span class="text-xs uppercase tracking-widest text-spaceGold font-orbitron block mb-2">TOUR DETAILS</span>
-                            <h2 class="text-3xl sm:text-4xl font-bold font-orbitron tracking-wide text-white">
-                                ABOUT <span class="text-spaceGold">THE TOUR</span>
-                            </h2>
-                            <p class="text-gray-400 text-sm mt-4 leading-relaxed font-light">
-                                We combine cutting-edge technology with unparalleled service to bring you the most immersive space travel experience. Every detail is curated to absolute perfection.
-                            </p>
+                    <!-- 左側文案欄位 -->
+                    <div class="lg:col-span-7 space-y-6 md:space-y-8 z-10">
+                        <div class="space-y-2">
+                            <span class="text-xs uppercase tracking-[0.4em] text-spaceGold font-orbitron font-semibold block">BEYOND IMAGINATION</span>
+                            <h1 class="text-4xl sm:text-6xl lg:text-[76px] font-bold font-orbitron tracking-wide leading-tight text-white">
+                                EXPLORE <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-spaceGold-light">THE UNIVERSE</span>
+                            </h1>
                         </div>
 
-                        <!-- 亮點列表 -->
-                        <div class="space-y-6">
-                            <!-- 特色 1 -->
-                            <div class="flex items-start space-x-4 group">
-                                <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
-                                    <i data-lucide="user-check" class="w-5 h-5 text-spaceGold"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">EXPERT CREW</h4>
-                                    <p class="text-xs text-gray-400 mt-1">Professional astronauts and guides.</p>
-                                </div>
-                            </div>
-
-                            <!-- 特色 2 -->
-                            <div class="flex items-start space-x-4 group">
-                                <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
-                                    <i data-lucide="compass" class="w-5 h-5 text-spaceGold"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">LUXURY EXPERIENCE</h4>
-                                    <p class="text-xs text-gray-400 mt-1">Premium comfort beyond Earth, customized suites, and premium viewports.</p>
-                                </div>
-                            </div>
-
-                            <!-- 特色 3 -->
-                            <div class="flex items-start space-x-4 group">
-                                <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
-                                    <i data-lucide="shield" class="w-5 h-5 text-spaceGold"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">SAFETY FIRST</h4>
-                                    <p class="text-xs text-gray-400 mt-1">Advanced life-support systems & redundant backups with 24/7 monitoring.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 中間航程階段時間軸 -->
-                    <div class="lg:col-span-3 flex flex-col justify-between py-2">
-                        
-                        <!-- 階段 1 -->
-                        <div class="relative pl-8 pb-8 border-l border-spaceGold/20">
-                            <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
-                            <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 1–3</span>
-                            <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">LUNAR ORBIT</h4>
-                            <p class="text-xs text-gray-400 mt-1 font-light">Experience zero gravity and stunning lunar views.</p>
-                        </div>
-
-                        <!-- 階段 2 -->
-                        <div class="relative pl-8 pb-8 border-l border-spaceGold/20">
-                            <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
-                            <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 4–6</span>
-                            <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">MARS FRONTIER</h4>
-                            <p class="text-xs text-gray-400 mt-1 font-light">Walk on Mars. Explore the red planet.</p>
-                        </div>
-
-                        <!-- 階段 3 -->
-                        <div class="relative pl-8">
-                            <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
-                            <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 7–10</span>
-                            <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">JUPITER SYSTEM</h4>
-                            <p class="text-xs text-gray-400 mt-1 font-light">Journey through the gas giant and its moons.</p>
-                        </div>
-
-                    </div>
-
-                    <!-- 右側高清預覽圖 -->
-                    <div class="lg:col-span-4 flex flex-col space-y-4">
-                        
-                        <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
-                            <img src="https://storage.yilup.com/uploads/1/6a11445360add_1779516499.png" alt="Lunar Flight Cruise" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
-                                <div>
-                                    <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 1</p>
-                                    <h5 class="text-xs font-bold text-white uppercase tracking-wider">Earth-Moon Cruise</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
-                            <img src="https://storage.yilup.com/uploads/1/6a1144524808d_1779516498.png" alt="Mars Plane Landing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
-                                <div>
-                                    <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 2</p>
-                                    <h5 class="text-xs font-bold text-white uppercase tracking-wider">Red Desert Landing</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
-                            <img src="https://storage.yilup.com/uploads/1/6a114451ec5ea_1779516497.png" alt="Outer Orbit Path" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
-                                <div>
-                                    <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 3</p>
-                                    <h5 class="text-xs font-bold text-white uppercase tracking-wider">Outer Planet Orbit</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- 包含項目細節區塊 -->
-            <section id="included" class="mt-28 lg:mt-36 pt-12 border-t border-white/5">
-                <div class="text-center max-w-2xl mx-auto mb-16">
-                    <span class="text-xs uppercase tracking-[0.3em] text-spaceGold font-orbitron block mb-2">ALL INCLUSIVE EXCELLENCE</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold font-orbitron tracking-wide text-white">
-                        WHAT’S <span class="text-spaceGold">INCLUDED</span>
-                    </h2>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    
-                    <!-- 項目 1 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="rocket" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">SPACE FLIGHTS</h4>
-                        <p class="text-[10px] text-gray-400">State-of-the-art spaceships</p>
-                    </div>
-
-                    <!-- 項目 2 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="hotel" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">ACCOMMODATION</h4>
-                        <p class="text-[10px] text-gray-400">Luxury stays on space stations</p>
-                    </div>
-
-                    <!-- 項目 3 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="glass-water" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">MEALS</h4>
-                        <p class="text-[10px] text-gray-400">Gourmet meals prepared onboard</p>
-                    </div>
-
-                    <!-- 項目 4 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="shuffle" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">TRANSFERS</h4>
-                        <p class="text-[10px] text-gray-400">All transfers included</p>
-                    </div>
-
-                    <!-- 項目 5 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="binoculars" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">ACTIVITIES</h4>
-                        <p class="text-[10px] text-gray-400">Excursions & unique experiences</p>
-                    </div>
-
-                    <!-- 項目 6 -->
-                    <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
-                        <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
-                            <i data-lucide="headset" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">24/7 SUPPORT</h4>
-                        <p class="text-[10px] text-gray-400">Support anytime, anywhere</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- 預約表單區塊 -->
-            <section id="contacts" class="mt-28 lg:mt-36 pt-12 border-t border-white/5 relative">
-                
-                <!-- 底部太空站科技底圖背景疊加 -->
-                <div class="absolute right-0 bottom-0 w-full lg:w-2/3 h-full opacity-35 pointer-events-none z-0">
-                    <img src="https://storage.yilup.com/uploads/1/6a114451ec5ea_1779516497.png" 
-                         alt="Space Station Base View" 
-                         class="w-full h-full object-cover object-right-bottom mix-blend-screen filter brightness-50 contrast-125">
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-                    
-                    <!-- 左側聯絡說明文案 -->
-                    <div class="lg:col-span-6 space-y-6">
-                        <span class="text-xs uppercase tracking-widest text-spaceGold font-orbitron block">START YOUR EXPEDITION</span>
-                        <h2 class="text-3xl sm:text-5xl font-bold font-orbitron tracking-wide text-white leading-tight">
-                            READY TO EXPLORE <br>
-                            <span class="text-spaceGold text-glow">THE UNIVERSE?</span>
-                        </h2>
-                        <p class="text-gray-400 text-sm max-w-lg leading-relaxed font-light">
-                            Leave a request and our team will contact you. Our specialized luxury cruise planners will craft your custom path through the cosmos.
+                        <p class="text-gray-400 text-sm sm:text-base max-w-xl font-light leading-relaxed">
+                            Luxury space journeys to the most extraordinary destinations. Experience the ultimate limits of human travel in unparalleled elegance.
                         </p>
 
-                        <!-- 直接聯絡資訊 -->
-                        <div class="space-y-4 pt-4 text-xs font-orbitron tracking-widest text-gray-300">
-                            <div class="flex items-center space-x-3">
-                                <i data-lucide="mail" class="w-4 h-4 text-spaceGold"></i>
-                                <span>cruises@spacetours.co</span>
+                        <!-- 動作按鈕 -->
+                        <div class="flex flex-wrap gap-4 items-center pt-2">
+                            <button onclick="openBookingModal('Full Universe Tour')" class="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-spaceGold-dark via-spaceGold to-spaceGold-light text-black font-semibold tracking-wider text-xs uppercase font-orbitron rounded hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-spaceGold/10">
+                                <span>BOOK YOUR JOURNEY</span>
+                                <i data-lucide="navigation" class="w-4 h-4 transform rotate-45"></i>
+                            </button>
+                            <button onclick="openVideoPlayer()" class="flex items-center space-x-2 px-8 py-4 bg-white/5 border border-white/15 hover:border-white/30 text-white font-semibold tracking-wider text-xs uppercase font-orbitron rounded hover:bg-white/10 active:scale-95 transition-all">
+                                <span>WATCH VIDEO</span>
+                                <i data-lucide="play-circle" class="w-4 h-4 text-spaceGold"></i>
+                            </button>
+                        </div>
+
+                        <!-- 信任度數據指標 -->
+                        <div class="flex items-center space-x-4 pt-6 border-t border-white/5 max-w-sm">
+                            <div class="flex -space-x-2">
+                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
+                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
+                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-spaceDark-950 object-cover" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=120&h=120" alt="Explorer">
                             </div>
-                            <div class="flex items-center space-x-3">
-                                <i data-lucide="phone-call" class="w-4 h-4 text-spaceGold"></i>
-                                <span>+1 (800) STAR-FLY</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <i data-lucide="map-pin" class="w-4 h-4 text-spaceGold"></i>
-                                <span>Launch Complex 39A, Cape Canaveral</span>
+                            <div>
+                                <div class="flex text-spaceGold mb-0.5">
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                </div>
+                                <p class="text-[11px] text-gray-400 font-medium">
+                                    Join <span class="text-white font-semibold">2,000+ explorers</span> who already traveled with us.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 右側提交表單 -->
-                    <div class="lg:col-span-6">
-                        <form id="expedition-form" onsubmit="handleFormSubmit(event)" class="glass-panel p-8 rounded-xl border border-white/10 space-y-4 max-w-lg ml-auto">
+                    <!-- 右側太空艙定位與漂浮飛船容器 -->
+                    <div class="lg:col-span-5 h-[340px] lg:h-[480px] flex items-center justify-center relative">
+                        
+                        <!-- 🛠️ 飛船元件 (尺寸 150px 精緻流線，自帶 3D 傾角與動態滑鼠跟隨) 🛠️ -->
+                        <div id="scrolling-spaceship" onclick="handleSpaceshipClick(event)" class="absolute z-20 cursor-pointer transition-all duration-300 ease-out" style="top: -5px; right: 26%; width: 150px; height: 150px; will-change: transform;">
+                            <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
+                                <defs>
+                                    <linearGradient id="laser-blue" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#38bdf8" stop-opacity="1" />
+                                        <stop offset="30%" stop-color="#0ea5e9" stop-opacity="0.85" />
+                                        <stop offset="70%" stop-color="#0284c7" stop-opacity="0.3" />
+                                        <stop offset="100%" stop-color="#0369a1" stop-opacity="0" />
+                                    </linearGradient>
+                                    <filter id="warp-glow" x="-40%" y="-40%" width="180%" height="180%">
+                                        <feGaussianBlur stdDeviation="6" result="blur" />
+                                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                    </filter>
+                                </defs>
+                                
+                                <!-- 雙針等離子主尾焰 -->
+                                <polygon id="engine-fire" class="engine-flame" points="100,128 88,190 100,210 112,190" fill="url(#laser-blue)" filter="url(#warp-glow)" />
+                                
+                                <!-- 左右推進火光 -->
+                                <polygon class="engine-flame" points="56,122 48,165 56,172 60,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
+                                <polygon class="engine-flame" points="144,122 140,165 144,172 152,165" fill="url(#laser-blue)" filter="url(#warp-glow)" opacity="0.75" />
+
+                                <!-- 曲率環 (Warp Ring) -->
+                                <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.7" filter="url(#warp-glow)" />
+                                <ellipse cx="100" cy="118" rx="42" ry="14" fill="none" stroke="#C19A5B" stroke-width="1.2" opacity="0.9" />
+
+                                <!-- 飛船副掠翼與推進支柱 -->
+                                <path d="M 55,100 L 25,122 L 32,130 L 75,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
+                                <path d="M 145,100 L 175,122 L 168,130 L 125,115 Z" fill="#0f172a" stroke="#936E34" stroke-width="1.5" />
+
+                                <!-- 主翼裝甲 -->
+                                <path d="M 100,10 L 40,98 L 70,118 L 100,98 L 130,118 L 160,98 Z" fill="#1e293b" stroke="#C19A5B" stroke-width="2.2" />
+                                
+                                <!-- 雙針機頭 -->
+                                <line x1="92" y1="12" x2="92" y2="45" stroke="#C19A5B" stroke-width="1.5" />
+                                <line x1="108" y1="12" x2="108" y2="45" stroke="#C19A5B" stroke-width="1.5" />
+
+                                <!-- 高光貼條 -->
+                                <path d="M 46,95 L 75,110 L 95,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
+                                <path d="M 154,95 L 125,110 L 105,102" fill="none" stroke="#E5C48F" stroke-width="1.8" opacity="0.95" />
+
+                                <!-- 中軸線裝甲 -->
+                                <path d="M 100,22 L 85,82 L 100,102 L 115,82 Z" fill="#070c15" stroke="#C19A5B" stroke-width="1.2" />
+
+                                <!-- 駕駛艙 -->
+                                <path d="M 100,38 L 88,72 L 100,84 L 112,72 Z" fill="#0ea5e9" opacity="0.85" filter="url(#warp-glow)" />
+                                <polygon points="100,44 94,68 100,76 106,68" fill="#ffffff" opacity="0.65" />
+                                <circle cx="100" cy="68" r="4.5" fill="#ffffff" filter="url(#warp-glow)" />
+
+                                <!-- 翼尖穩定器 -->
+                                <path d="M 40,98 L 18,112 L 32,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
+                                <path d="M 160,98 L 182,112 L 168,120 Z" fill="#111827" stroke="#38bdf8" stroke-width="1.2" />
+
+                                <!-- 定位指示燈 -->
+                                <circle cx="18" cy="112" r="2.5" fill="#ef4444" filter="url(#warp-glow)" />
+                                <circle cx="182" cy="112" r="2.5" fill="#10b981" filter="url(#warp-glow)" />
+                            </svg>
+
+                            <!-- 🛠_ 懸浮投影超空間引擎進度 HUD 顯示 🛠_ -->
+                            <div id="warp-hud" class="absolute left-1/2 -translate-x-1/2 -top-16 bg-black/85 border border-spaceGold/50 rounded-lg p-2.5 w-40 text-left opacity-0 pointer-events-none transition-all duration-300 shadow-[0_0_15px_rgba(193,154,91,0.2)]">
+                                <div class="flex justify-between items-center text-[9px] font-orbitron tracking-widest text-spaceGold-light font-bold mb-1.5">
+                                    <span>HYPERDRIVE</span>
+                                    <span id="hud-percent">0%</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                    <div id="hud-bar" class="h-full bg-gradient-to-r from-spaceGold-dark via-spaceGold to-spaceGold-light transition-all duration-200" style="width: 0%"></div>
+                                </div>
+                                <p class="text-[7px] text-gray-400 font-orbitron mt-1 text-center uppercase tracking-widest">Click ship to charge</p>
+                            </div>
+                        </div>
+
+                        <!-- 原有的 Next Launch 定位指示器 -->
+                        <div class="absolute p-4 glass-panel border border-spaceGold/10 rounded-xl flex items-center space-x-3 bottom-0 right-0 max-w-xs z-10 animate-bounce" style="animation-duration: 4s;">
+                            <span class="relative flex h-3.5 w-3.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-spaceGold opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-spaceGold"></span>
+                            </span>
+                            <div class="text-[10px] tracking-widest font-orbitron uppercase text-gray-300">
+                                Next Launch: <span class="text-white font-bold">22 hours</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 目的地卡片區塊 -->
+                <div id="destinations" class="mt-16 lg:mt-24">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
+                        
+                        <!-- 卡片 1: 月球度假 -->
+                        <div onclick="selectDestination('Lunar Escape', '3 Days', 'Experience zero gravity and stunning lunar views on this beautiful 3-day round trip flight.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a11445360add_1779516499.png" alt="Lunar Escape" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Earth Orb</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">LUNAR ESCAPE</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">3 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 2: 火星先鋒 -->
+                        <div onclick="selectDestination('Mars Frontier', '7 Days', 'Step into the future on the Red Planet. Explore canyons, ancient dry lake beds and futuristic research habitats.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a1144524808d_1779516498.png" alt="Mars Frontier" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Terrestrial</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">MARS FRONTIER</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">7 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 3: 木星探險 -->
+                        <div onclick="selectDestination('Jupiter Odyssey', '10 Days', 'Sail past the Great Red Spot and witness the immense majesty of the Jovian solar sphere from dynamic safe orbit.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a11445270079_1779516498.png" alt="Jupiter Odyssey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Gas Giant</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">JUPITER ODYSSEY</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">10 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 4: 土星光環 -->
+                        <div onclick="selectDestination('Saturn Rings', '8 Days', 'Drift along the iconic ring lines. Peer deep into the dust gaps and marvel at millions of brilliant reflections.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a114452984bb_1779516498.png" alt="Saturn Rings" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Ring World</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">SATURN RINGS</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">8 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 5: 星雲尋蹤 -->
+                        <div onclick="selectDestination('Nebula Hunt', '5 Days', 'Travel close to highly energetic star birth complexes. View vibrant gases emitting stellar glow up close.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a114452bf43c_1779516498.png" alt="Nebula Hunt" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Stellar</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">NEBULA HUNT</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">5 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 6: 超越太陽 -->
+                        <div onclick="selectDestination('Beyond Solar', '14 Days', 'Fly deep past the Kuiper Belt limits into interstellar boundaries. Experience authentic stellar silence.')" class="gold-border-glow bg-spaceDark-900/80 p-3 rounded-lg cursor-pointer group flex flex-col justify-between h-52">
+                            <div class="overflow-hidden rounded-md h-28 relative">
+                                <img src="https://storage.yilup.com/uploads/1/6a114451b7881_1779516497.png" alt="Beyond Solar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] text-spaceGold uppercase font-orbitron tracking-widest">Deep Space</div>
+                            </div>
+                            <div class="mt-2 flex flex-col justify-end flex-grow">
+                                <h3 class="text-[11px] uppercase tracking-wider font-orbitron text-white group-hover:text-spaceGold transition-colors">BEYOND SOLAR</h3>
+                                <span class="text-[9px] text-gray-500 font-medium">14 DAYS</span>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 7: 瀏覽全部行程 -->
+                        <div onclick="scrollToContact()" class="gold-border-glow bg-gradient-to-br from-spaceDark-900 to-spaceDark-800 p-4 rounded-lg cursor-pointer flex flex-col items-center justify-center text-center h-52 border border-dashed border-spaceGold/20 hover:bg-spaceDark-800 transition-all">
+                            <div class="w-10 h-10 rounded-full border border-spaceGold/40 flex items-center justify-center mb-3">
+                                <i data-lucide="rocket" class="w-5 h-5 text-spaceGold"></i>
+                            </div>
+                            <span class="text-[11px] font-orbitron tracking-widest text-spaceGold uppercase block font-semibold">VIEW ALL TOURS</span>
+                            <span class="text-[9px] text-gray-400 mt-1 block">Explore all destinations</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 關於行程區塊 -->
+                <section id="about" class="mt-28 lg:mt-36 pt-12 border-t border-white/5">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        
+                        <!-- 左側文案與特色 -->
+                        <div class="lg:col-span-5 space-y-8">
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-spaceGold font-orbitron block mb-2">TOUR DETAILS</span>
+                                <h2 class="text-3xl sm:text-4xl font-bold font-orbitron tracking-wide text-white">
+                                    ABOUT <span class="text-spaceGold">THE TOUR</span>
+                                </h2>
+                                <p class="text-gray-400 text-sm mt-4 leading-relaxed font-light">
+                                    We combine cutting-edge technology with unparalleled service to bring you the most immersive space travel experience. Every detail is curated to absolute perfection.
+                                </p>
+                            </div>
+
+                            <!-- 亮點列表 -->
+                            <div class="space-y-6">
+                                <!-- 特色 1 -->
+                                <div class="flex items-start space-x-4 group">
+                                    <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
+                                        <i data-lucide="user-check" class="w-5 h-5 text-spaceGold"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">EXPERT CREW</h4>
+                                        <p class="text-xs text-gray-400 mt-1">Professional astronauts and guides.</p>
+                                    </div>
+                                </div>
+
+                                <!-- 特色 2 -->
+                                <div class="flex items-start space-x-4 group">
+                                    <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
+                                        <i data-lucide="compass" class="w-5 h-5 text-spaceGold"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">LUXURY EXPERIENCE</h4>
+                                        <p class="text-xs text-gray-400 mt-1">Premium comfort beyond Earth, customized suites, and premium viewports.</p>
+                                    </div>
+                                </div>
+
+                                <!-- 特色 3 -->
+                                <div class="flex items-start space-x-4 group">
+                                    <div class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-spaceGold/20 group-hover:border-spaceGold/60 transition-colors">
+                                        <i data-lucide="shield" class="w-5 h-5 text-spaceGold"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold font-orbitron text-white uppercase tracking-wider">SAFETY FIRST</h4>
+                                        <p class="text-xs text-gray-400 mt-1">Advanced life-support systems & redundant backups with 24/7 monitoring.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 中間航程階段時間軸 -->
+                        <div class="lg:col-span-3 flex flex-col justify-between py-2">
                             
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Full Name</label>
-                                <input type="text" required placeholder="Full Name" 
-                                       class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600">
+                            <!-- 階段 1 -->
+                            <div class="relative pl-8 pb-8 border-l border-spaceGold/20">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
+                                <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 1–3</span>
+                                <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">LUNAR ORBIT</h4>
+                                <p class="text-xs text-gray-400 mt-1 font-light">Experience zero gravity and stunning lunar views.</p>
                             </div>
 
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Email Address</label>
-                                <input type="email" required placeholder="Email Address" 
-                                       class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600">
+                            <!-- 階段 2 -->
+                            <div class="relative pl-8 pb-8 border-l border-spaceGold/20">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
+                                <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 4–6</span>
+                                <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">MARS FRONTIER</h4>
+                                <p class="text-xs text-gray-400 mt-1 font-light">Walk on Mars. Explore the red planet.</p>
                             </div>
 
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Desired Destination</label>
-                                <select class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors">
-                                    <option value="Lunar Escape" class="bg-spaceDark-900">Lunar Escape (3 Days)</option>
-                                    <option value="Mars Frontier" class="bg-spaceDark-900" selected>Mars Frontier (7 Days)</option>
-                                    <option value="Jupiter Odyssey" class="bg-spaceDark-900">Jupiter Odyssey (10 Days)</option>
-                                    <option value="Saturn Rings" class="bg-spaceDark-900">Saturn Rings (8 Days)</option>
-                                    <option value="Nebula Hunt" class="bg-spaceDark-900">Nebula Hunt (5 Days)</option>
-                                    <option value="Beyond Solar" class="bg-spaceDark-900">Beyond Solar (14 Days)</option>
-                                </select>
+                            <!-- 階段 3 -->
+                            <div class="relative pl-8">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-spaceGold border-4 border-spaceDark-950"></div>
+                                <span class="text-[10px] text-spaceGold font-orbitron tracking-widest uppercase block font-semibold">Days 7–10</span>
+                                <h4 class="text-sm font-orbitron text-white font-bold mt-0.5">JUPITER SYSTEM</h4>
+                                <p class="text-xs text-gray-400 mt-1 font-light">Journey through the gas giant and its moons.</p>
                             </div>
 
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Your Message</label>
-                                <textarea rows="3" placeholder="Your Message" 
-                                          class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600 resize-none"></textarea>
+                        </div>
+
+                        <!-- 右側高清預覽圖 -->
+                        <div class="lg:col-span-4 flex flex-col space-y-4">
+                            
+                            <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
+                                <img src="https://storage.yilup.com/uploads/1/6a11445360add_1779516499.png" alt="Lunar Flight Cruise" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
+                                    <div>
+                                        <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 1</p>
+                                        <h5 class="text-xs font-bold text-white uppercase tracking-wider">Earth-Moon Cruise</h5>
+                                    </div>
+                                </div>
                             </div>
 
-                            <button type="submit" class="w-full flex items-center justify-center space-x-2 py-3 bg-gradient-to-r from-spaceGold-dark to-spaceGold hover:brightness-110 active:scale-[0.98] transition-all text-black font-bold tracking-widest text-[11px] uppercase font-orbitron rounded mt-2">
-                                <span>SEND REQUEST</span>
-                                <i data-lucide="send" class="w-3.5 h-3.5"></i>
-                            </button>
+                            <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
+                                <img src="https://storage.yilup.com/uploads/1/6a1144524808d_1779516498.png" alt="Mars Plane Landing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
+                                    <div>
+                                        <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 2</p>
+                                        <h5 class="text-xs font-bold text-white uppercase tracking-wider">Red Desert Landing</h5>
+                                    </div>
+                                </div>
+                            </div>
 
-                        </form>
+                            <div class="relative h-28 rounded-lg overflow-hidden group border border-white/5 hover:border-spaceGold/30 transition-all">
+                                <img src="https://storage.yilup.com/uploads/1/6a114451ec5ea_1779516497.png" alt="Outer Orbit Path" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-4">
+                                    <div>
+                                        <p class="text-[10px] text-spaceGold uppercase tracking-widest font-orbitron">Phase 3</p>
+                                        <h5 class="text-xs font-bold text-white uppercase tracking-wider">Outer Planet Orbit</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- 包含項目細節區塊 -->
+                <section id="included" class="mt-28 lg:mt-36 pt-12 border-t border-white/5">
+                    <div class="text-center max-w-2xl mx-auto mb-16">
+                        <span class="text-xs uppercase tracking-[0.3em] text-spaceGold font-orbitron block mb-2">ALL INCLUSIVE EXCELLENCE</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold font-orbitron tracking-wide text-white">
+                            WHAT’S <span class="text-spaceGold">INCLUDED</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        
+                        <!-- 項目 1 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="rocket" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">SPACE FLIGHTS</h4>
+                            <p class="text-[10px] text-gray-400">State-of-the-art spaceships</p>
+                        </div>
+
+                        <!-- 項目 2 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="hotel" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">ACCOMMODATION</h4>
+                            <p class="text-[10px] text-gray-400">Luxury stays on space stations</p>
+                        </div>
+
+                        <!-- 項目 3 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="glass-water" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">MEALS</h4>
+                            <p class="text-[10px] text-gray-400">Gourmet meals prepared onboard</p>
+                        </div>
+
+                        <!-- 項目 4 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="shuffle" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">TRANSFERS</h4>
+                            <p class="text-[10px] text-gray-400">All transfers included</p>
+                        </div>
+
+                        <!-- 項目 5 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="binoculars" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">ACTIVITIES</h4>
+                            <p class="text-[10px] text-gray-400">Excursions & unique experiences</p>
+                        </div>
+
+                        <!-- 項目 6 -->
+                        <div class="gold-border-glow bg-spaceDark-900/40 p-6 rounded-lg text-center flex flex-col items-center justify-center space-y-3">
+                            <div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-spaceGold mb-1">
+                                <i data-lucide="headset" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white font-orbitron">24/7 SUPPORT</h4>
+                            <p class="text-[10px] text-gray-400">Support anytime, anywhere</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- 預約表單區塊 -->
+                <section id="contacts" class="mt-28 lg:mt-36 pt-12 border-t border-white/5 relative">
+                    
+                    <!-- 底部太空站科技底圖背景疊加 -->
+                    <div class="absolute right-0 bottom-0 w-full lg:w-2/3 h-full opacity-35 pointer-events-none z-0">
+                        <img src="https://storage.yilup.com/uploads/1/6a114451ec5ea_1779516497.png" 
+                             alt="Space Station Base View" 
+                             class="w-full h-full object-cover object-right-bottom mix-blend-screen filter brightness-50 contrast-125">
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+                        
+                        <!-- 左側聯絡說明文案 -->
+                        <div class="lg:col-span-6 space-y-6">
+                            <span class="text-xs uppercase tracking-widest text-spaceGold font-orbitron block">START YOUR EXPEDITION</span>
+                            <h2 class="text-3xl sm:text-5xl font-bold font-orbitron tracking-wide text-white leading-tight">
+                                READY TO EXPLORE <br>
+                                <span class="text-spaceGold text-glow">THE UNIVERSE?</span>
+                            </h2>
+                            <p class="text-gray-400 text-sm max-w-lg leading-relaxed font-light">
+                                Leave a request and our team will contact you. Our specialized luxury cruise planners will craft your custom path through the cosmos.
+                            </p>
+
+                            <!-- 直接聯絡資訊 -->
+                            <div class="space-y-4 pt-4 text-xs font-orbitron tracking-widest text-gray-300">
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="mail" class="w-4 h-4 text-spaceGold"></i>
+                                    <span>cruises@spacetours.co</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="phone-call" class="w-4 h-4 text-spaceGold"></i>
+                                    <span>+1 (800) STAR-FLY</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-spaceGold"></i>
+                                    <span>Launch Complex 39A, Cape Canaveral</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右側提交表單 -->
+                        <div class="lg:col-span-6">
+                            <form id="expedition-form" onsubmit="handleFormSubmit(event)" class="glass-panel p-8 rounded-xl border border-white/10 space-y-4 max-w-lg ml-auto">
+                                
+                                <div>
+                                    <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Full Name</label>
+                                    <input type="text" required placeholder="Full Name" 
+                                           class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600">
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Email Address</label>
+                                    <input type="email" required placeholder="Email Address" 
+                                           class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600">
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Desired Destination</label>
+                                    <select class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors">
+                                        <option value="Lunar Escape" class="bg-spaceDark-900">Lunar Escape (3 Days)</option>
+                                        <option value="Mars Frontier" class="bg-spaceDark-900" selected>Mars Frontier (7 Days)</option>
+                                        <option value="Jupiter Odyssey" class="bg-spaceDark-900">Jupiter Odyssey (10 Days)</option>
+                                        <option value="Saturn Rings" class="bg-spaceDark-900">Saturn Rings (8 Days)</option>
+                                        <option value="Nebula Hunt" class="bg-spaceDark-900">Nebula Hunt (5 Days)</option>
+                                        <option value="Beyond Solar" class="bg-spaceDark-900">Beyond Solar (14 Days)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] uppercase tracking-widest text-spaceGold font-orbitron font-semibold mb-1">Your Message</label>
+                                    <textarea rows="3" placeholder="Your Message" 
+                                              class="w-full bg-spaceDark-950/80 border border-white/10 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-spaceGold transition-colors placeholder-gray-600 resize-none"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full flex items-center justify-center space-x-2 py-3 bg-gradient-to-r from-spaceGold-dark to-spaceGold hover:brightness-110 active:scale-[0.98] transition-all text-black font-bold tracking-widest text-[11px] uppercase font-orbitron rounded mt-2">
+                                    <span>SEND REQUEST</span>
+                                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- 頁尾宣告與連結 -->
+            <footer class="border-t border-white/5 py-12 bg-spaceDark-950/90 text-xs text-gray-500 font-orbitron tracking-widest px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+                    
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-6 h-6 text-spaceGold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="8"></circle>
+                            <ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-30 12 12)"></ellipse>
+                        </svg>
+                        <span class="text-white font-bold text-sm">SPACE TOURS</span>
+                    </div>
+
+                    <div class="text-center md:text-right space-y-2">
+                        <p class="text-[10px]">&copy; 2026 Space Tours Inc. All rights reserved.</p>
+                        <div class="flex justify-center md:justify-end space-x-4 text-[9px] text-gray-400">
+                            <a href="#" class="hover:text-spaceGold transition-colors">PRIVACY POLICY</a>
+                            <span>&bull;</span>
+                            <a href="#" class="hover:text-spaceGold transition-colors">SAFETY PROTOCOLS</a>
+                        </div>
                     </div>
 
                 </div>
-            </section>
+            </footer>
 
-        </main>
-
-        <!-- 頁尾宣告與連結 -->
-        <footer class="border-t border-white/5 py-12 mt-16 bg-spaceDark-950/90 text-xs text-gray-500 font-orbitron tracking-widest">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-                
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-spaceGold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="12" cy="12" r="8"></circle>
-                        <ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-30 12 12)"></ellipse>
-                    </svg>
-                    <span class="text-white font-bold text-sm">SPACE TOURS</span>
-                </div>
-
-                <div class="text-center md:text-right space-y-2">
-                    <p class="text-[10px]">&copy; 2026 Space Tours Inc. All rights reserved.</p>
-                    <div class="flex justify-center md:justify-end space-x-4 text-[9px] text-gray-400">
-                        <a href="#" class="hover:text-spaceGold transition-colors">PRIVACY POLICY</a>
-                        <span>&bull;</span>
-                        <a href="#" class="hover:text-spaceGold transition-colors">SAFETY PROTOCOLS</a>
-                    </div>
-                </div>
-
-            </div>
-        </footer>
+        </div>
 
     </div>
 
-    <!-- 🛠️ Messenger 行銷導流彈出視窗 (連結為官方直達對話框專屬格式 m.me) 🛠️ -->
+    <!-- 交互模組 / 功能性彈出視窗 -->
+
+    <!-- 🛠️ Messenger 行銷導流彈出視窗 (連結已修正為官方直達對話框專屬格式 m.me) 🛠️ -->
     <div id="messenger-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-[#0B121E] border border-gray-800 rounded-[32px] p-8 max-w-[420px] w-full text-center relative shadow-2xl shadow-blue-500/10">
             <!-- 關閉按鈕 -->
@@ -1096,10 +1103,6 @@
         // Messenger 導流視窗開關
         const messengerModal = document.getElementById('messenger-modal');
 
-        function openMessengerModal() {
-            messengerModal.classList.remove('hidden');
-        }
-
         // 在關閉 Messenger 視窗或跳轉時重設引擎充能與點擊限制，實現不限次數觸發煙火！
         function closeMessengerModal() {
             messengerModal.classList.add('hidden');
@@ -1109,6 +1112,10 @@
             warpChargePercent = 0;
             hud_percent.innerText = "0%";
             hud_bar.style.width = "0%";
+        }
+
+        function openMessengerModal() {
+            messengerModal.classList.remove('hidden');
         }
 
         function closeDestinationModal() {
