@@ -586,11 +586,15 @@
                 <!-- 預約表單區塊 -->
                 <section id="contacts" class="mt-28 lg:mt-36 pt-12 border-t border-white/5 relative">
                     
-                    <!-- 底部太空站科技底圖背景疊加 -->
-                    <div class="absolute right-0 bottom-0 w-full lg:w-2/3 h-full opacity-35 pointer-events-none z-0">
-                        <img src="https://storage.yilup.com/uploads/1/6a114451ec5ea_1779516497.png" 
+                    <!-- 🛠️ 修正問題：徹底移除含有卡片字樣的殘影圖，更換為乾淨的主太空背景圖，並垂直靠底顯示圓形太空站結構 🛠️ -->
+                    <!-- 增加 opacity-90，高寬度和更精準的對比亮度，使其在網頁底部能夠無比亮眼地呈現地球太空站 🪐 -->
+                    <div class="absolute inset-x-0 bottom-0 w-full h-[580px] opacity-90 pointer-events-none z-0 overflow-hidden">
+                        <!-- 使用 object-bottom 將背景圖最下方的「行星太空站（如附件 151d60 紅框）」完美裁切呈現出來 -->
+                        <img src="https://storage.yilup.com/uploads/1/6a10eb080b304_1779493640.webp" 
                              alt="Space Station Base View" 
-                             class="w-full h-full object-cover object-right-bottom mix-blend-screen filter brightness-50 contrast-125">
+                             class="w-full h-full object-cover object-bottom filter brightness-105 contrast-110 saturate-125">
+                        <!-- 上端自然淡出融合遮罩：讓太空站上緣和上方的極深黑背景完美自然地融合 -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-transparent via-spaceDark-950/70 to-spaceDark-950"></div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
